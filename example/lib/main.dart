@@ -21,17 +21,17 @@ class ExampleApp extends StatelessWidget {
           child: Container(
             width: 150,
             height: 150,
-            decoration: BoxDecoration(
+            decoration: InsetBoxDecoration(
               borderRadius: BorderRadius.circular(50),
               color: primaryColor,
               boxShadow: const [
-                BoxShadow(
+                InsetBoxShadow(
                   offset: Offset(-20, -20),
                   blurRadius: 60,
                   color: Colors.white,
                   inset: true,
                 ),
-                BoxShadow(
+                InsetBoxShadow(
                   offset: Offset(20, 20),
                   blurRadius: 60,
                   color: Color(0xFFBEBEBE),

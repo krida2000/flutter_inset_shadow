@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart' hide BoxShadow;
 import 'package:flutter/painting.dart' as painting;
 
-class BoxShadow extends painting.BoxShadow {
-  const BoxShadow({
+class InsetBoxShadow extends painting.BoxShadow {
+  const InsetBoxShadow({
     Color color = const Color(0xFF000000),
     Offset offset = Offset.zero,
     double blurRadius = 0.0,
@@ -14,20 +14,20 @@ class BoxShadow extends painting.BoxShadow {
     BlurStyle blurStyle = BlurStyle.normal,
     this.inset = false,
   }) : super(
-          color: color,
-          offset: offset,
-          blurRadius: blurRadius,
-          spreadRadius: spreadRadius,
-          blurStyle: blurStyle,
-        );
+         color: color,
+         offset: offset,
+         blurRadius: blurRadius,
+         spreadRadius: spreadRadius,
+         blurStyle: blurStyle,
+       );
 
   /// Wether this shadow should be inset or not.
   final bool inset;
 
   /// Returns a new box shadow with its offset, blurRadius, and spreadRadius scaled by the given factor.
   @override
-  BoxShadow scale(double factor) {
-    return BoxShadow(
+  InsetBoxShadow scale(double factor) {
+    return InsetBoxShadow(
       color: color,
       offset: offset * factor,
       blurRadius: blurRadius * factor,
@@ -44,7 +44,7 @@ class BoxShadow extends painting.BoxShadow {
   /// offset and a zero blurRadius.
   ///
   /// {@macro dart.ui.shadow.lerp}
-  static BoxShadow? lerp(BoxShadow? a, BoxShadow? b, double t) {
+  static InsetBoxShadow? lerp(InsetBoxShadow? a, InsetBoxShadow? b, double t) {
     if (a == null && b == null) {
       return null;
     }
@@ -55,11 +55,12 @@ class BoxShadow extends painting.BoxShadow {
       return a.scale(1.0 - t);
     }
 
-    final blurStyle =
-        a.blurStyle == BlurStyle.normal ? b.blurStyle : a.blurStyle;
+    final blurStyle = a.blurStyle == BlurStyle.normal
+        ? b.blurStyle
+        : a.blurStyle;
 
     if (a.inset != b.inset) {
-      return BoxShadow(
+      return InsetBoxShadow(
         color: lerpColorWithPivot(a.color, b.color, t),
         offset: lerpOffsetWithPivot(a.offset, b.offset, t),
         blurRadius: lerpDoubleWithPivot(a.blurRadius, b.blurRadius, t),
@@ -69,7 +70,7 @@ class BoxShadow extends painting.BoxShadow {
       );
     }
 
-    return BoxShadow(
+    return InsetBoxShadow(
       color: Color.lerp(a.color, b.color, t)!,
       offset: Offset.lerp(a.offset, b.offset, t)!,
       blurRadius: ui.lerpDouble(a.blurRadius, b.blurRadius, t)!,
@@ -84,19 +85,19 @@ class BoxShadow extends painting.BoxShadow {
   /// If the lists differ in length, excess items are lerped with null.
   ///
   /// {@macro dart.ui.shadow.lerp}
-  static List<BoxShadow>? lerpList(
-    List<BoxShadow>? a,
-    List<BoxShadow>? b,
+  static List<InsetBoxShadow>? lerpList(
+    List<InsetBoxShadow>? a,
+    List<InsetBoxShadow>? b,
     double t,
   ) {
     if (a == null && b == null) {
       return null;
     }
-    a ??= <BoxShadow>[];
-    b ??= <BoxShadow>[];
+    a ??= <InsetBoxShadow>[];
+    b ??= <InsetBoxShadow>[];
     final int commonLength = math.min(a.length, b.length);
-    return <BoxShadow>[
-      for (int i = 0; i < commonLength; i += 1) BoxShadow.lerp(a[i], b[i], t)!,
+    return <InsetBoxShadow>[
+      for (int i = 0; i < commonLength; i += 1) InsetBoxShadow.lerp(a[i], b[i], t)!,
       for (int i = commonLength; i < a.length; i += 1) a[i].scale(1.0 - t),
       for (int i = commonLength; i < b.length; i += 1) b[i].scale(t),
     ];
@@ -110,7 +111,7 @@ class BoxShadow extends painting.BoxShadow {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is BoxShadow &&
+    return other is InsetBoxShadow &&
         other.color == color &&
         other.offset == offset &&
         other.blurRadius == blurRadius &&
@@ -146,8 +147,8 @@ Offset lerpOffsetWithPivot(Offset? a, Offset? b, double t) {
 
 Color lerpColorWithPivot(Color? a, Color? b, double t) {
   if (t < 0.5) {
-    return Color.lerp(a, a?.withOpacity(0), t * 2)!;
+    return Color.lerp(a, a?.withValues(alpha: 0), t * 2)!;
   }
 
-  return Color.lerp(b?.withOpacity(0), b, (t - 0.5) * 2)!;
+  return Color.lerp(b?.withValues(alpha: 0), b, (t - 0.5) * 2)!;
 }
