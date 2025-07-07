@@ -14,12 +14,12 @@ class InsetBoxShadow extends painting.BoxShadow {
     BlurStyle blurStyle = BlurStyle.normal,
     this.inset = false,
   }) : super(
-         color: color,
-         offset: offset,
-         blurRadius: blurRadius,
-         spreadRadius: spreadRadius,
-         blurStyle: blurStyle,
-       );
+          color: color,
+          offset: offset,
+          blurRadius: blurRadius,
+          spreadRadius: spreadRadius,
+          blurStyle: blurStyle,
+        );
 
   /// Wether this shadow should be inset or not.
   final bool inset;
@@ -55,9 +55,8 @@ class InsetBoxShadow extends painting.BoxShadow {
       return a.scale(1.0 - t);
     }
 
-    final blurStyle = a.blurStyle == BlurStyle.normal
-        ? b.blurStyle
-        : a.blurStyle;
+    final blurStyle =
+        a.blurStyle == BlurStyle.normal ? b.blurStyle : a.blurStyle;
 
     if (a.inset != b.inset) {
       return InsetBoxShadow(
@@ -97,7 +96,8 @@ class InsetBoxShadow extends painting.BoxShadow {
     b ??= <InsetBoxShadow>[];
     final int commonLength = math.min(a.length, b.length);
     return <InsetBoxShadow>[
-      for (int i = 0; i < commonLength; i += 1) InsetBoxShadow.lerp(a[i], b[i], t)!,
+      for (int i = 0; i < commonLength; i += 1)
+        InsetBoxShadow.lerp(a[i], b[i], t)!,
       for (int i = commonLength; i < a.length; i += 1) a[i].scale(1.0 - t),
       for (int i = commonLength; i < b.length; i += 1) b[i].scale(t),
     ];

@@ -15,15 +15,15 @@ class InsetBoxDecoration extends painting.BoxDecoration {
     BlendMode? backgroundBlendMode,
     BoxShape shape = BoxShape.rectangle,
   }) : super(
-         color: color,
-         image: image,
-         border: border,
-         borderRadius: borderRadius,
-         boxShadow: boxShadow,
-         gradient: gradient,
-         backgroundBlendMode: backgroundBlendMode,
-         shape: shape,
-       );
+          color: color,
+          image: image,
+          border: border,
+          borderRadius: borderRadius,
+          boxShadow: boxShadow,
+          gradient: gradient,
+          backgroundBlendMode: backgroundBlendMode,
+          shape: shape,
+        );
 
   /// Creates a copy of this object but with the given fields replaced with the
   /// new values.
@@ -61,7 +61,11 @@ class InsetBoxDecoration extends painting.BoxDecoration {
       // TODO(ianh): fade the image from transparent
       border: BoxBorder.lerp(null, border, factor),
       borderRadius: BorderRadiusGeometry.lerp(null, borderRadius, factor),
-      boxShadow: InsetBoxShadow.lerpList(null, boxShadow as List<InsetBoxShadow>, factor),
+      boxShadow: InsetBoxShadow.lerpList(
+        null,
+        boxShadow as List<InsetBoxShadow>,
+        factor,
+      ),
       gradient: gradient?.scale(factor),
       shape: shape,
     );
@@ -104,7 +108,11 @@ class InsetBoxDecoration extends painting.BoxDecoration {
   ///  * [lerpFrom] and [lerpTo], which are used to implement [Decoration.lerp]
   ///    and which use [InsetBoxDecoration.lerp] when interpolating two
   ///    [InsetBoxDecoration]s or a [InsetBoxDecoration] to or from null.
-  static InsetBoxDecoration? lerp(InsetBoxDecoration? a, InsetBoxDecoration? b, double t) {
+  static InsetBoxDecoration? lerp(
+    InsetBoxDecoration? a,
+    InsetBoxDecoration? b,
+    double t,
+  ) {
     if (a == null && b == null) {
       return null;
     }
@@ -150,7 +158,7 @@ class InsetBoxDecoration extends painting.BoxDecoration {
 /// An object that paints a [InsetBoxDecoration] or an [InsetBoxDecoration] into a canvas.
 class _InsetBoxDecorationPainter extends BoxPainter {
   _InsetBoxDecorationPainter(this._decoration, VoidCallback? onChanged)
-    : super(onChanged);
+      : super(onChanged);
 
   final InsetBoxDecoration _decoration;
 
@@ -225,9 +233,8 @@ class _InsetBoxDecorationPainter extends BoxPainter {
         }
       }
 
-      final Rect bounds = rect
-          .shift(boxShadow.offset)
-          .inflate(boxShadow.spreadRadius);
+      final Rect bounds =
+          rect.shift(boxShadow.offset).inflate(boxShadow.spreadRadius);
       Paint paint;
 
       if (boxShadow.blurStyle == BlurStyle.outer) {
@@ -235,8 +242,7 @@ class _InsetBoxDecorationPainter extends BoxPainter {
           ..color = boxShadow.color
           ..maskFilter = MaskFilter.blur(BlurStyle.normal, boxShadow.blurSigma);
 
-        final borderRadiusGeometry =
-            _decoration.borderRadius ??
+        final borderRadiusGeometry = _decoration.borderRadius ??
             (_decoration.shape == BoxShape.circle
                 ? BorderRadius.circular(rect.longestSide)
                 : BorderRadius.zero);
@@ -330,8 +336,7 @@ class _InsetBoxDecorationPainter extends BoxPainter {
 
       final color = boxShadow.color;
 
-      final borderRadiusGeometry =
-          _decoration.borderRadius ??
+      final borderRadiusGeometry = _decoration.borderRadius ??
           (_decoration.shape == BoxShape.circle
               ? BorderRadius.circular(rect.longestSide)
               : BorderRadius.zero);

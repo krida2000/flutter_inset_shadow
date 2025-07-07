@@ -3,13 +3,9 @@ description: This package extends BoxShadow and BoxDecoration to support the ins
 version: 2.0.3
 repository: https://github.com/chitochi/flutter_inset_shadow
 
+environment:
+  sdk: '>=2.18.0 <4.0.0'
+
 dependencies:
   flutter:
     sdk: flutter
-
-dev_dependencies:
-  flutter_lints: ^6.0.0
-
-environment:
-  flutter: '>=3.32.0'
-  sdk: '>=3.8.0 <4.0.0'
