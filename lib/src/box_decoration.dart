@@ -254,7 +254,7 @@ class _InsetBoxDecorationPainter extends BoxPainter {
         canvas.clipPath(
           Path.combine(
             PathOperation.difference,
-            Path()..addRect(bounds.inflate(boxShadow.blurSigma)),
+            Path()..addRect(Rect.largest),
             Path()..addRRect(clipRRect),
           ),
         );
