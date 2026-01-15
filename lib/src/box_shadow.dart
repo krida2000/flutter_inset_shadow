@@ -13,6 +13,8 @@ class InsetBoxShadow extends painting.BoxShadow {
     double spreadRadius = 0.0,
     BlurStyle blurStyle = BlurStyle.normal,
     this.inset = false,
+    this.insetTop = true,
+    this.insetBottom = true,
   }) : super(
           color: color,
           offset: offset,
@@ -21,8 +23,36 @@ class InsetBoxShadow extends painting.BoxShadow {
           blurStyle: blurStyle,
         );
 
-  /// Wether this shadow should be inset or not.
+  /// Whether this shadow should be inset or not.
   final bool inset;
+
+  /// Whether inset shadow should draws on top.
+  final bool insetTop;
+
+  /// Whether inset shadow should draws on bottom.
+  final bool insetBottom;
+
+  @override
+  InsetBoxShadow copyWith({
+    double? blurRadius,
+    BlurStyle? blurStyle,
+    Color? color,
+    Offset? offset,
+    double? spreadRadius,
+    bool? inset,
+    bool? insetTop,
+    bool? insetBottom,
+  }) =>
+      InsetBoxShadow(
+        color: color ?? this.color,
+        offset: offset ?? this.offset,
+        blurRadius: blurRadius ?? this.blurRadius,
+        spreadRadius: spreadRadius ?? this.spreadRadius,
+        blurStyle: blurStyle ?? this.blurStyle,
+        inset: inset ?? this.inset,
+        insetTop: insetTop ?? this.insetTop,
+        insetBottom: insetBottom ?? this.insetBottom,
+      );
 
   /// Returns a new box shadow with its offset, blurRadius, and spreadRadius scaled by the given factor.
   @override
@@ -34,6 +64,8 @@ class InsetBoxShadow extends painting.BoxShadow {
       spreadRadius: spreadRadius * factor,
       blurStyle: blurStyle,
       inset: inset,
+      insetTop: insetTop,
+      insetBottom: insetBottom,
     );
   }
 
@@ -66,6 +98,8 @@ class InsetBoxShadow extends painting.BoxShadow {
         spreadRadius: lerpDoubleWithPivot(a.spreadRadius, b.spreadRadius, t),
         blurStyle: blurStyle,
         inset: t >= 0.5 ? b.inset : a.inset,
+        insetTop: b.insetTop,
+        insetBottom: b.insetBottom,
       );
     }
 
@@ -76,6 +110,8 @@ class InsetBoxShadow extends painting.BoxShadow {
       spreadRadius: ui.lerpDouble(a.spreadRadius, b.spreadRadius, t)!,
       blurStyle: blurStyle,
       inset: b.inset,
+      insetTop: b.insetTop,
+      insetBottom: b.insetBottom,
     );
   }
 
@@ -117,16 +153,18 @@ class InsetBoxShadow extends painting.BoxShadow {
         other.blurRadius == blurRadius &&
         other.spreadRadius == spreadRadius &&
         other.blurStyle == blurStyle &&
-        other.inset == inset;
+        other.inset == inset &&
+        other.insetBottom == insetBottom &&
+        other.insetTop == insetTop;
   }
 
   @override
-  int get hashCode =>
-      Object.hash(color, offset, blurRadius, spreadRadius, blurStyle, inset);
+  int get hashCode => Object.hash(color, offset, blurRadius, spreadRadius,
+      blurStyle, inset, insetBottom, insetTop);
 
   @override
   String toString() =>
-      'BoxShadow($color, $offset, ${debugFormatDouble(blurRadius)}, ${debugFormatDouble(spreadRadius)}), $blurStyle, $inset)';
+      'BoxShadow($color, $offset, ${debugFormatDouble(blurRadius)}, ${debugFormatDouble(spreadRadius)}), $blurStyle, $inset, $insetTop, $insetBottom)';
 }
 
 double lerpDoubleWithPivot(num? a, num? b, double t) {

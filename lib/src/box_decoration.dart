@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart' hide BoxShadow, BoxDecoration;
 import 'package:flutter/painting.dart' as painting;
 import 'dart:math' as math;
@@ -344,18 +345,26 @@ class _InsetBoxDecorationPainter extends BoxPainter {
 
       final clipRRect = borderRadius.toRRect(rect);
 
-      final innerRect = rect.deflate(boxShadow.spreadRadius);
+      var innerRect = rect.deflate(boxShadow.spreadRadius);
+
       if (innerRect.isEmpty) {
         final paint = Paint()..color = color;
         canvas.drawRRect(clipRRect, paint);
       }
 
+      final outerRect = _areaCastingShadowInHole(rect, boxShadow);
+
+      innerRect = Rect.fromLTRB(
+        innerRect.left,
+        boxShadow.insetTop ? innerRect.top : outerRect.top,
+        innerRect.right,
+        boxShadow.insetBottom ? innerRect.bottom : outerRect.bottom,
+      );
+
       var innerRRect = borderRadius.toRRect(innerRect);
 
       canvas.save();
       canvas.clipRRect(clipRRect);
-
-      final outerRect = _areaCastingShadowInHole(rect, boxShadow);
 
       canvas.drawDRRect(
         RRect.fromRectAndRadius(outerRect, Radius.zero),
